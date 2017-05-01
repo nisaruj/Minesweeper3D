@@ -3,13 +3,13 @@ using System.Collections;
 
 public class main_loop : MonoBehaviour {
 
+	public Vector3 spawn;
 	public Vector3 start_pos;
 	public Vector3 size;
 	public GameObject cube;
+	public GameObject Player;
 	public int board_width=30,board_height=30;
 	public int bombs=15;
-
-	
 
 	int[,] main_board = new int[100,100];
 	int[,] dir = {{-1,-1} , {0,-1} , {1,-1} , {-1,0} , {1,0} , {-1,1} , {0,1} , {1,1}};
@@ -34,7 +34,7 @@ public class main_loop : MonoBehaviour {
 			main_board[xpos,ypos] = 9;
 			count++;
 		}
-		//Debug : Bombs list
+	
 		for(int i=0;i<board_height;i++) {
 			for(int j=0;j<board_width;j++) {
 				if (is_bomb[i,j]) {
@@ -63,10 +63,27 @@ public class main_loop : MonoBehaviour {
 		}
 	}
 
+	void spawn_player() {
+		spawn = new Vector3((start_pos.x+board_width*size.x)/2,start_pos.y+10,(start_pos.z+board_height*size.z)/2);
+		Instantiate(Player,spawn,Quaternion.identity);
+	}
+
+	public void open_dfs(int x,int y,bool pass) {
+		if (x < 0 || x >= board_height || y < 0 || y >= board_width) return;
+		if (is_opened[x,y] || pass) return;
+		if (main_board[x,y] > 0) pass = true;
+		is_opened[x,y] = true;
+		open_dfs(x+1,y,pass);
+		open_dfs(x-1,y,pass);
+		open_dfs(x,y+1,pass);
+		open_dfs(x,y-1,pass);
+	}
+
 	// Use this for initialization
 	void Start () {
 		board_gen();
 		cube_gen();
+		spawn_player();
 	}
 	
 	// Update is called once per frame

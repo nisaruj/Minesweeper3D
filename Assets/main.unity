@@ -112,9 +112,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b14069441659a24082a60b2660cdd6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawn: {x: 0, y: 0, z: 0}
   start_pos: {x: 0, y: 0, z: 0}
   size: {x: 0, y: 0, z: 0}
   cube: {fileID: 123528, guid: 47123949653f6d34abd67fb97e863310, type: 2}
+  Player: {fileID: 100000, guid: 5e9e851c0e142814dac026a256ba2ac0, type: 2}
   board_width: 30
   board_height: 30
   bombs: 100
@@ -148,7 +150,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!81 &103701406
 AudioListener:
   m_ObjectHideFlags: 0
