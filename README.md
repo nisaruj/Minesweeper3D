@@ -11,7 +11,6 @@ Just a classic game.
 
 * **Nisaruj Rattanaaram** - [nisaruj](https://github.com/nisaruj)
 
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 
 ## License
 
