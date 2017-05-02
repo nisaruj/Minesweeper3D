@@ -117,6 +117,7 @@ MonoBehaviour:
   size: {x: 0, y: 0, z: 0}
   cube: {fileID: 123528, guid: 47123949653f6d34abd67fb97e863310, type: 2}
   Player: {fileID: 100000, guid: 5e9e851c0e142814dac026a256ba2ac0, type: 2}
+  wall: {fileID: 141434, guid: 8cdae182eb9158441a28b97ed4b4d515, type: 2}
   board_width: 30
   board_height: 30
   bombs: 100
@@ -269,7 +270,7 @@ GameObject:
   - 4: {fileID: 2085184043}
   - 108: {fileID: 2085184042}
   m_Layer: 0
-  m_Name: Directional light
+  m_Name: main_light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

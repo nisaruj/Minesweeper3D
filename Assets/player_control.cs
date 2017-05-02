@@ -19,7 +19,7 @@ public class player_control : MonoBehaviour {
 		
 		ray = main_cam.ScreenPointToRay(new Vector3(Screen.width/2, Screen.height/2, 0));
 		if (Input.GetMouseButtonDown(0)) {
-			if (Physics.Raycast(ray,out hit,100f)) {
+			if (Physics.Raycast(ray,out hit,5f)) {
 				if (hit.collider.gameObject.tag == "cube") {
 					GameObject selected_cube = hit.collider.gameObject;
 					cube_property cp = selected_cube.GetComponent<cube_property>();

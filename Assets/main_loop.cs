@@ -8,6 +8,7 @@ public class main_loop : MonoBehaviour {
 	public Vector3 size;
 	public GameObject cube;
 	public GameObject Player;
+	public GameObject wall;
 	public int board_width=30,board_height=30;
 	public int bombs=15;
 
@@ -50,7 +51,6 @@ public class main_loop : MonoBehaviour {
 	}
 
 	void cube_gen() {
-		size = cube.transform.localScale;
 		for (int i=0;i<board_height;i++) {
 			for(int j=0;j<board_width;j++) {
 				newcube = (GameObject)Instantiate(cube,new Vector3(start_pos.x+i*size.x,start_pos.y,start_pos.z+j*size.z),Quaternion.identity);
@@ -61,6 +61,18 @@ public class main_loop : MonoBehaviour {
 				prop.ypos = j;
 			}
 		}
+	}
+
+	void wall_gen() {
+		GameObject newwall;
+		newwall = (GameObject)Instantiate(wall,new Vector3((float)start_pos.x+((float)board_height*size.x/2)-(float)size.x/2,start_pos.y,start_pos.z-size.z),Quaternion.identity);
+		newwall.transform.localScale = new Vector3(size.x*board_height,100,size.z);
+		newwall = (GameObject)Instantiate(wall,new Vector3((float)start_pos.x+((float)board_height*size.x/2)-(float)size.x/2,start_pos.y,(float)start_pos.z+(float)size.z*board_width),Quaternion.identity);
+		newwall.transform.localScale = new Vector3(size.x*board_height,100,size.z);
+		newwall = (GameObject)Instantiate(wall,new Vector3(start_pos.x-size.x,start_pos.y,(float)board_width*size.z/2-(float)size.z/2),Quaternion.identity);
+		newwall.transform.localScale = new Vector3(size.x,100,size.z*board_width);
+		newwall = (GameObject)Instantiate(wall,new Vector3((float)start_pos.x+(float)size.x*board_height,start_pos.y,(float)board_width*size.z/2-(float)size.z/2),Quaternion.identity);
+		newwall.transform.localScale = new Vector3(size.x,100,size.z*board_width);
 	}
 
 	void spawn_player() {
@@ -79,10 +91,18 @@ public class main_loop : MonoBehaviour {
 		open_dfs(x,y-1,pass);
 	}
 
+	void setMainlight() {
+		GameObject main_light = GameObject.Find("main_light");
+		main_light.transform.position = new Vector3((float)start_pos.x+((float)board_height*size.x/2),100,(float)board_width*size.z/2-(float)size.z/2);
+	}
+
 	// Use this for initialization
 	void Start () {
+		size = cube.transform.localScale;
 		board_gen();
 		cube_gen();
+		wall_gen();
+		setMainlight();
 		spawn_player();
 	}
 	
