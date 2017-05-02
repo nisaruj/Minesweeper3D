@@ -9,12 +9,14 @@ public class main_loop : MonoBehaviour {
 	public GameObject cube;
 	public GameObject Player;
 	public GameObject wall;
+	public GameObject flag;
 	public int board_width=30,board_height=30;
 	public int bombs=15;
 
 	int[,] main_board = new int[100,100];
 	int[,] dir = {{-1,-1} , {0,-1} , {1,-1} , {-1,0} , {1,0} , {-1,1} , {0,1} , {1,1}};
 	bool[,] is_bomb = new bool[100,100];
+	public bool[,] is_flag = new bool[100,100];
 	public bool[,] is_opened = new bool[100,100];
 	GameObject newcube;
 	
@@ -24,6 +26,7 @@ public class main_loop : MonoBehaviour {
 		for (int i=0;i<board_height;i++) {
 			for(int j=0;j<board_width;j++) {
 				is_bomb[i,j] = false;
+				is_flag[i,j] = false;
 				main_board[i,j] = 0;
 			}
 		}
@@ -77,18 +80,35 @@ public class main_loop : MonoBehaviour {
 
 	void spawn_player() {
 		spawn = new Vector3((start_pos.x+board_width*size.x)/2,start_pos.y+10,(start_pos.z+board_height*size.z)/2);
-		Instantiate(Player,spawn,Quaternion.identity);
+		Instantiate(Player,spawn,Quaternion.Euler(new Vector3(0, 180, 0)));
 	}
 
 	public void open_dfs(int x,int y,bool pass) {
 		if (x < 0 || x >= board_height || y < 0 || y >= board_width) return;
 		if (is_opened[x,y] || pass) return;
+		if (is_flag[x,y]) return;
 		if (main_board[x,y] > 0) pass = true;
 		is_opened[x,y] = true;
 		open_dfs(x+1,y,pass);
 		open_dfs(x-1,y,pass);
 		open_dfs(x,y+1,pass);
 		open_dfs(x,y-1,pass);
+	}
+
+	public void set_flag(int x,int y,Vector3 flagpos,float flagrot) {
+		GameObject current_flag;
+		if (!is_opened[x,y]) {
+			if (!is_flag[x,y]) {
+				//Debug.Log(flagrot.ToString());
+				current_flag = (GameObject)Instantiate(flag,flagpos,Quaternion.identity);
+				current_flag.name = "flag " + x.ToString() + ',' + y.ToString();
+				current_flag.transform.rotation = Quaternion.Euler(new Vector3(0,90+flagrot,0));
+			} else {
+				current_flag = GameObject.Find("flag " + x.ToString() + ',' + y.ToString());
+				Destroy(current_flag);
+			}
+			is_flag[x,y] = !is_flag[x,y];
+		}
 	}
 
 	void setMainlight() {
