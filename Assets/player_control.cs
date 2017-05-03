@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityStandardAssets.ImageEffects;
+using UnityStandardAssets.Characters.FirstPerson;
 
 public class player_control : MonoBehaviour {
 
@@ -7,11 +9,21 @@ public class player_control : MonoBehaviour {
 	main_loop mainvar;
 	RaycastHit hit;
 	Ray ray;
+	Grayscale grayscale;
+
+	public void player_dead() {
+		grayscale.enabled = true;
+		GameObject player = GameObject.FindWithTag("Player");
+		FirstPersonController fpscon = player.GetComponent<FirstPersonController>();
+		fpscon.enabled = false;
+	}
 
 	// Use this for initialization
 	void Start () {
+		grayscale = GetComponent<Grayscale>();
 	 	main_cam = GetComponent<Camera>();
 		mainvar = GameObject.Find("main_game").GetComponent<main_loop>();
+		grayscale.enabled = false;
 	}
 	
 	// Update is called once per frame

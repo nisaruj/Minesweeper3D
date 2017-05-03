@@ -93,6 +93,11 @@ public class main_loop : MonoBehaviour {
 					}
 				}
 			}
+			GameObject main_cam = GameObject.FindWithTag("MainCamera");
+			main_cam.GetComponent<player_control>().player_dead();
+			//yield return new WaitForSeconds(5);
+			//Application.LoadLevel(Application.loadedLevel);
+
 	}
 
 	public void open_dfs(int x,int y,bool pass) {
