@@ -47,6 +47,7 @@ public class player_control : MonoBehaviour {
 					GameObject selected_cube = hit.collider.gameObject;
 					cube_property cp = selected_cube.GetComponent<cube_property>();
 					mainvar.set_flag(cp.xpos,cp.ypos,hit.point,(float)player.transform.localRotation.eulerAngles.y);
+					mainvar.win_check();
 					Debug.DrawLine(ray.origin, hit.point);
 				}
 			}

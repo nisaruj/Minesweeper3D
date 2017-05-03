@@ -11,8 +11,10 @@ public class main_loop : MonoBehaviour {
 	public GameObject wall;
 	public GameObject flag;
 	public GameObject explosion;
+	public GameObject gameoverPanel;
 	public int board_width=30,board_height=30;
 	public int bombs=15;
+	public int flag_count = 0;
 
 	int[,] main_board = new int[100,100];
 	int[,] dir = {{-1,-1} , {0,-1} , {1,-1} , {-1,0} , {1,0} , {-1,1} , {0,1} , {1,1}};
@@ -39,7 +41,6 @@ public class main_loop : MonoBehaviour {
 			main_board[xpos,ypos] = 9;
 			count++;
 		}
-	
 		for(int i=0;i<board_height;i++) {
 			for(int j=0;j<board_width;j++) {
 				if (is_bomb[i,j]) {
@@ -84,20 +85,42 @@ public class main_loop : MonoBehaviour {
 		Instantiate(Player,spawn,Quaternion.Euler(new Vector3(0, 180, 0)));
 	}
 
-	void game_over() {
+	public void win_check() {
+		int count = flag_count;
+		if (count != 0) return;
+		for (int i=0;i<board_height;i++) {
+			for(int j=0;j<board_width;j++) {
+				if (is_bomb[i,j] && is_flag[i,j]) count++;
+			}
+		}
+		if (count == bombs) game_over(true);
+	}
+
+	void game_over(bool is_win) {
+			//Show unflaged bombs
 			for(int i=0;i<board_height;i++) {
 				for(int j=0;j<board_width;j++) {
-					if (is_bomb[i,j]) {
+					if (is_bomb[i,j] && !is_flag[i,j]) {
+						is_opened[i,j] = true;
 						GameObject newexplosion = (GameObject)Instantiate(explosion,new Vector3(start_pos.x+i*size.x,start_pos.y,start_pos.z+j*size.z),Quaternion.identity);
 						Destroy(newexplosion,5);
 					}
 				}
 			}
+
 			GameObject main_cam = GameObject.FindWithTag("MainCamera");
 			main_cam.GetComponent<player_control>().player_dead();
-			//yield return new WaitForSeconds(5);
-			//Application.LoadLevel(Application.loadedLevel);
 
+			//Show game cursor
+			Cursor.lockState = CursorLockMode.None;
+			Cursor.visible = true;
+
+			//Show gameover UI 
+			gameoverPanel.SetActive(true);
+
+			//Stop timer
+			time_counter tc = GameObject.Find("timer").GetComponent<time_counter>();
+			tc.is_enabled = false;
 	}
 
 	public void open_dfs(int x,int y,bool pass) {
@@ -108,7 +131,7 @@ public class main_loop : MonoBehaviour {
 		is_opened[x,y] = true;
 		if (is_bomb[x,y]) {
 			//Bomb found!
-			game_over();
+			game_over(false);
 			return;
 		}
 		open_dfs(x+1,y,pass);
@@ -125,9 +148,11 @@ public class main_loop : MonoBehaviour {
 				current_flag = (GameObject)Instantiate(flag,flagpos,Quaternion.identity);
 				current_flag.name = "flag " + x.ToString() + ',' + y.ToString();
 				current_flag.transform.rotation = Quaternion.Euler(new Vector3(0,90+flagrot,0));
+				flag_count--;
 			} else {
 				current_flag = GameObject.Find("flag " + x.ToString() + ',' + y.ToString());
 				Destroy(current_flag);
+				flag_count++;
 			}
 			is_flag[x,y] = !is_flag[x,y];
 		}
@@ -141,6 +166,7 @@ public class main_loop : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		size = cube.transform.localScale;
+		flag_count = bombs;
 		board_gen();
 		cube_gen();
 		wall_gen();
