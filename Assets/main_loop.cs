@@ -10,6 +10,7 @@ public class main_loop : MonoBehaviour {
 	public GameObject Player;
 	public GameObject wall;
 	public GameObject flag;
+	public GameObject explosion;
 	public int board_width=30,board_height=30;
 	public int bombs=15;
 
@@ -83,12 +84,28 @@ public class main_loop : MonoBehaviour {
 		Instantiate(Player,spawn,Quaternion.Euler(new Vector3(0, 180, 0)));
 	}
 
+	void game_over() {
+			for(int i=0;i<board_height;i++) {
+				for(int j=0;j<board_width;j++) {
+					if (is_bomb[i,j]) {
+						GameObject newexplosion = (GameObject)Instantiate(explosion,new Vector3(start_pos.x+i*size.x,start_pos.y,start_pos.z+j*size.z),Quaternion.identity);
+						Destroy(newexplosion,5);
+					}
+				}
+			}
+	}
+
 	public void open_dfs(int x,int y,bool pass) {
 		if (x < 0 || x >= board_height || y < 0 || y >= board_width) return;
 		if (is_opened[x,y] || pass) return;
 		if (is_flag[x,y]) return;
 		if (main_board[x,y] > 0) pass = true;
 		is_opened[x,y] = true;
+		if (is_bomb[x,y]) {
+			//Bomb found!
+			game_over();
+			return;
+		}
 		open_dfs(x+1,y,pass);
 		open_dfs(x-1,y,pass);
 		open_dfs(x,y+1,pass);

@@ -186,6 +186,7 @@ MonoBehaviour:
   Player: {fileID: 100000, guid: 5e9e851c0e142814dac026a256ba2ac0, type: 2}
   wall: {fileID: 141434, guid: 8cdae182eb9158441a28b97ed4b4d515, type: 2}
   flag: {fileID: 100002, guid: 12406af54f670f442a1cd9a3cad252fe, type: 3}
+  explosion: {fileID: 100010, guid: 031d08f52af1daa4f929b85221519426, type: 2}
   board_width: 30
   board_height: 30
   bombs: 100
@@ -219,7 +220,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!81 &103701406
 AudioListener:
   m_ObjectHideFlags: 0
