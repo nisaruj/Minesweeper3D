@@ -1,10 +1,16 @@
 fileFormatVersion: 2
 guid: 3b14069441659a24082a60b2660cdd6d
-timeCreated: 1493621378
+timeCreated: 1494035991
 licenseType: Pro
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - cube: {fileID: 123528, guid: 47123949653f6d34abd67fb97e863310, type: 2}
+  - Player: {instanceID: 0}
+  - wall: {fileID: 141434, guid: 8cdae182eb9158441a28b97ed4b4d515, type: 2}
+  - flag: {fileID: 100002, guid: 12406af54f670f442a1cd9a3cad252fe, type: 3}
+  - explosion: {fileID: 100010, guid: 031d08f52af1daa4f929b85221519426, type: 2}
+  - gameoverPanel: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

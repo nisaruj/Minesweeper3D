@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class time_counter : MonoBehaviour {
 
 	public bool is_enabled = true;
-	float timer = 0;
+	public float timer = 0;
 
 	// Use this for initialization
 	void Start () {

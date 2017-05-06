@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class main_loop : MonoBehaviour {
 
@@ -12,6 +13,7 @@ public class main_loop : MonoBehaviour {
 	public GameObject flag;
 	public GameObject explosion;
 	public GameObject gameoverPanel;
+	public GameObject[] gameoverText;
 	public int board_width=30,board_height=30;
 	public int bombs=15;
 	public int flag_count = 0;
@@ -115,12 +117,18 @@ public class main_loop : MonoBehaviour {
 			Cursor.lockState = CursorLockMode.None;
 			Cursor.visible = true;
 
-			//Show gameover UI 
-			gameoverPanel.SetActive(true);
-
 			//Stop timer
 			time_counter tc = GameObject.Find("timer").GetComponent<time_counter>();
 			tc.is_enabled = false;
+
+			//Show gameover UI 
+			gameoverPanel.SetActive(true);
+			GameObject txt;
+			if (is_win) txt = gameoverText[1];
+			else txt = gameoverText[0];
+			txt.SetActive(true);
+
+			gameoverText[2].GetComponent<Text>().text = "Time : " + ((int)(tc.timer)).ToString() + " seconds";
 	}
 
 	public void open_dfs(int x,int y,bool pass) {
